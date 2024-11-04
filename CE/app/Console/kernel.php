@@ -15,6 +15,10 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\CleanLivewireTemp::class, // Asegúrate de registrar tu comando aquí
     ];
+    protected $middleware = [
+        // ...
+        \App\Http\Middleware\CorsMiddleware::class,
+    ];
 
     /**
      * Define the application's command schedule.

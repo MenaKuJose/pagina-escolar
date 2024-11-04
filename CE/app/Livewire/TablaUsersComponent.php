@@ -19,4 +19,17 @@ class TablaUsersComponent extends Component
     {
         return view('livewire.tabla-users-component', ['users' => $this->users]);
     }
+
+
+    public function index()
+    {
+        $usuario = User::all();
+        $data = [
+            'usuarios' => $usuario,
+            'datos' => 200
+        ];
+
+        // Retorna la respuesta en formato JSON
+        return response()->json($data, 200);
+    }
 }

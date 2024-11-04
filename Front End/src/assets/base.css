@@ -84,3 +84,62 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Estilos para el contenedor principal */
+.main-content {
+  padding: 20px; /* Espaciado interno */
+  border: 1px solid var(--color-border); /* Borde del contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  background-color: var(--color-background-soft); /* Fondo suave */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+}
+
+/* Estilos para los encabezados dentro del contenido principal */
+.main-content h1,
+.main-content h2,
+.main-content h3 {
+  color: var(--color-heading); /* Color para los encabezados */
+  margin-bottom: 15px; /* Espaciado inferior */
+}
+
+/* Estilos para los párrafos */
+.main-content p {
+  color: var(--color-text); /* Color del texto */
+  margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilos para enlaces */
+.main-content a {
+  color: var(--vt-c-indigo); /* Color de los enlaces */
+  text-decoration: none; /* Quitar subrayado */
+}
+
+.main-content a:hover {
+  text-decoration: underline; /* Subrayado en hover */
+}
+
+/* Estilos para botones */
+.main-content .btn {
+  background-color: var(--vt-c-indigo); /* Color de fondo del botón */
+  color: var(--vt-c-white); /* Color del texto del botón */
+  padding: 10px 20px; /* Espaciado interno */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor de mano */
+  transition: background-color 0.3s; /* Transición suave */
+}
+
+.main-content .btn:hover {
+  background-color: darken(var(--vt-c-indigo), 10%); /* Color más oscuro al pasar el ratón */
+}
+
+/* Estilos para listas */
+.main-content ul,
+.main-content ol {
+  padding-left: 20px; /* Espaciado a la izquierda */
+  margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.main-content li {
+  color: var(--color-text); /* Color de los elementos de lista */
+  margin-bottom: 5px; /* Espaciado entre elementos de lista */
+}
