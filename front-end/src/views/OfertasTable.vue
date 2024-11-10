@@ -1,32 +1,34 @@
 <template>
-    <div>
-      <h2>Ofertas Educativas</h2>
-      <table class="table-auto w-full">
-        <thead>
-          <tr>
-            <th class="px-4 py-2">Nombre</th>
-            <th class="px-4 py-2">Etapa Inicial</th>
-            <th class="px-4 py-2">Duración Inicial</th>
-            <th class="px-4 py-2">Etapa Continuidad</th>
-            <th class="px-4 py-2">Duración Continuidad</th>
-            <th class="px-4 py-2">Duración Total</th>
-            <th class="px-4 py-2">Horas Totales</th>
-            <th class="px-4 py-2">Créditos Totales</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="oferta in ofertas" :key="oferta.id">
-            <td class="border px-4 py-2">{{ oferta.nombre }}</td>
-            <td class="border px-4 py-2">{{ oferta.etapa_inicial }}</td>
-            <td class="border px-4 py-2">{{ oferta.duracion_cuatri_in }}</td>
-            <td class="border px-4 py-2">{{ oferta.etapa_continuidad }}</td>
-            <td class="border px-4 py-2">{{ oferta.duracion_cuatri_con }}</td>
-            <td class="border px-4 py-2">{{ oferta.duracion_total_programa }}</td>
-            <td class="border px-4 py-2">{{ oferta.horas_totales }}</td>
-            <td class="border px-4 py-2">{{ oferta.creditos_totales }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container mx-auto p-6 bg-gray-100">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ofertas Educativas</h2>
+      <div class="overflow-x-auto">
+        <table class="table-auto w-full bg-white shadow-md rounded-lg">
+          <thead class="bg-blue-500 text-white">
+            <tr>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Nombre</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Etapa Inicial</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Duración Inicial</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Etapa Continuidad</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Duración Continuidad</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Duración Total</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Horas Totales</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Créditos Totales</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="oferta in ofertas" :key="oferta.id" class="hover:bg-gray-100 transition-colors">
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.nombre }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.etapa_inicial }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.duracion_cuatri_in }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.etapa_continuidad }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.duracion_cuatri_con }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.duracion_total_programa }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.horas_totales }}</td>
+              <td class="border-t px-6 py-4 text-gray-700">{{ oferta.creditos_totales }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </template>
   
@@ -55,36 +57,36 @@
       },
     },
   };
-  
   </script>
   
   <style scoped>
-  table {
-    background-color: #ffffff; /* Fondo blanco para la tabla */
-    color: #333; /* Texto en color oscuro */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
   }
   
-  th, td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
+  table {
+    border-collapse: collapse;
+    width: 100%;
   }
   
   th {
-    background-color: #f4f4f4; /* Fondo gris claro para encabezados */
-    color: #333; /* Texto en color oscuro */
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  
+  td, th {
+    padding: 12px 16px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9fafb;
   }
   
   h2 {
-    color: #333; /* Texto del título en color oscuro */
+    color: #1f2937;
+    font-weight: 600;
   }
   
-  button {
-    color: #3498db; /* Color base del botón */
-  }
-  
-  button:hover {
-    color: #2980b9; /* Color del botón al pasar el cursor */
-  }
   </style>
   
