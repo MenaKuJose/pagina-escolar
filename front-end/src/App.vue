@@ -1,30 +1,35 @@
 <template>
-  <div id="app" class="flex">
+  <div id="app" class="d-flex min-vh-100 bg-light">
     <!-- Sidebar -->
-    <aside class="sidebar w-64 h-screen bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 shadow-lg">
-      <h2 class="text-2xl font-semibold mb-8 text-center">Menú</h2>
-      <ul class="space-y-4">
-        <li>
-          <router-link to="/" class="nav-link">Home</router-link>
+    <aside class="sidebar text-white p-4 shadow-lg" style="width: 250px;">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+        <img src="@/assets/logo-U_T_P.png" alt="Logo" class="logo" />
+      </div>
+      <h2 class="h4 text-center mb-4">Menú</h2>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <router-link to="/" class="nav-link text-white">Home</router-link>
         </li>
-        <li>
-          <router-link to="/about" class="nav-link">About</router-link>
+        <li class="nav-item mb-2">
+          <router-link to="/about" class="nav-link text-white">About</router-link>
         </li>
-        <li>
-          <router-link to="/ofertas" class="nav-link">Ofertas Educativas</router-link>
+        <li class="nav-item mb-2">
+          <router-link to="/ofertas" class="nav-link text-white">Ofertas Educativas</router-link>
         </li>
-        <li>
-          <router-link to="/usuarios" class="nav-link">Usuarios Registrados</router-link>
+        <li class="nav-item">
+          <router-link to="/usuarios" class="nav-link text-white">Usuarios Registrados</router-link>
         </li>
       </ul>
     </aside>
 
     <!-- Main Content -->
-    <div class="content flex-1 p-10 bg-gray-100">
+    <div class="content flex-grow-1 p-4 bg-white rounded shadow-sm">
       <router-view />
     </div>
   </div>
 </template>
+
 
 <style scoped>
 /* Main Layout */
@@ -38,12 +43,19 @@
   color: #2c3e50;
 }
 
+/* Logo Styles */
+.logo {
+  width: 80px;
+  height: auto;
+  border-radius: 50%; /* Esto es opcional */
+}
+
 /* Sidebar Styles */
 .sidebar {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  background-color: #1e3a8a;
+  background-color: #800020; /* Rojo guinda */
   color: #ffffff;
 }
 
@@ -69,7 +81,7 @@
 
 .nav-link.router-link-exact-active {
   color: #42b983;
-  background-color: #2563eb;
+  background-color: #580101;
   font-weight: 600;
   box-shadow: inset 3px 0 0 #ffffff;
 }
