@@ -6,7 +6,7 @@
             <div class="text-center mb-4">
         <img src="@/assets/logo-U_T_P.png" alt="Logo" class="logo" />
       </div>
-      <h2 class="h4 text-center mb-4">Menú</h2>
+      <h2 class="h4 text-center mb-4">Universidad Tecnológica del Poniente</h2>
       <ul class="nav flex-column">
         <li class="nav-item mb-2">
           <router-link to="/" class="nav-link text-white">Home</router-link>
