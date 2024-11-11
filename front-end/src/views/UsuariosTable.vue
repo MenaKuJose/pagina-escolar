@@ -6,14 +6,10 @@
     </header>
 
     <!-- Loading and Table -->
-    <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 300px;">
-      <div class="text-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-          <span class="sr-only"></span>
-        </div>
-        <div class="mt-2">Cargando...</div>
-      </div>
+    <div v-if="loading">
+      <!-- No se necesita spinner porque SweetAlert2 lo gestionará -->
     </div>
+    
     <div v-else class="table-responsive">
       <table class="table table-bordered table-striped shadow-sm">
         <thead class="bg-primary text-white">
@@ -37,9 +33,9 @@
   </div>
 </template>
 
-
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';  // Importar SweetAlert2
 
 export default {
   name: "UserTable",
@@ -54,6 +50,17 @@ export default {
   },
   methods: {
     fetchUsuarios() {
+      // Mostrar SweetAlert2 mientras se carga
+      Swal.fire({
+        title: 'Cargando...',
+        text: 'Por favor espera mientras cargamos los usuarios.',
+        showConfirmButton: false,
+        allowOutsideClick: false, // Impide cerrar el alert al hacer clic fuera
+        didOpen: () => {
+          Swal.showLoading(); // Muestra el indicador de carga
+        },
+      });
+
       axios
         .get('http://localhost:8000/api/list-users')
         .then(response => {
@@ -64,6 +71,7 @@ export default {
         })
         .finally(() => {
           this.loading = false; // Termina la carga
+          Swal.close(); // Cierra el SweetAlert2 una vez cargados los datos
         });
     },
   },

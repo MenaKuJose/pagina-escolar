@@ -1,21 +1,16 @@
 <template>
   <div class="container my-5 p-4 bg-light rounded">
     <h2 class="h4 dashboard-title mb-4">Dashboard</h2>
-    <!-- Gráficas -->
-    <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 300px;">
-      <div class="text-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-          <span class="sr-only">Cargando...</span>
-        </div>
-        <div class="mt-2">Cargando...</div>
-      </div>
+
+    <div v-if="loading">
+      <!-- Solo SweetAlert2 se encargará de mostrar el spinner de carga -->
     </div>
 
     <div v-else>
       <!-- Gráfica de Ofertas (arriba) -->
       <div class="row mb-4">
         <div class="col-md-12">
-          <h4>Ofertas Disponibles</h4>
+          <h4-tg class="h4 dashboard-title mb-4">Ofertas Disponibles</h4-tg>
           <BarChart v-if="ofertasData.labels.length > 0" :data="ofertasData" />
         </div>
       </div>
@@ -23,7 +18,7 @@
       <!-- Gráfica de Usuarios (debajo) -->
       <div class="row mb-4">
         <div class="col-md-12">
-          <h4>Crecimiento de Usuarios</h4>
+          <h4-tg class="h4 dashboard-title mb-4">Crecimiento de Usuarios</h4-tg>
           <LineChart v-if="usuariosData.labels.length > 0" :data="usuariosData" />
         </div>
       </div>
@@ -35,6 +30,7 @@
 import axios from 'axios';
 import { Line, Bar } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, BarElement } from 'chart.js';
+import Swal from 'sweetalert2';
 
 // Registrar los componentes de Chart.js
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, BarElement);
@@ -60,47 +56,52 @@ export default {
     };
   },
   mounted() {
-    this.fetchOfertas();
-    this.fetchUsuarios();
+    this.fetchData();
   },
   methods: {
-    // Fetch ofertas data
-    fetchOfertas() {
-      axios
-        .get('http://localhost:8000/api/list-of')
-        .then(response => {
-          this.ofertas = response.data.ofertas;
-          this.processOfertasData();
-        })
-        .catch(error => {
-          console.error("Error al obtener las ofertas:", error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
+    // Fetch datos de ofertas y usuarios
+    fetchData() {
+      // Mostrar el mensaje de carga con SweetAlert2
+      Swal.fire({
+        title: 'Cargando Datos...',
+        text: 'Estamos obteniendo los datos, espere por favor.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(); // Spinner de SweetAlert2
+        },
+      });
 
-    // Fetch usuarios data
-    fetchUsuarios() {
+      // Realizamos las solicitudes de datos de forma concurrente usando axios.all
       axios
-        .get('http://localhost:8000/api/list-users')
-        .then(response => {
-          this.usuarios = response.data.usuarios;
-          this.processUsuariosData();
-        })
-        .catch(error => {
-          console.error("Error al obtener los usuarios:", error);
-          alert("Error al obtener los datos de usuarios.");
+        .all([
+          axios.get('http://localhost:8000/api/list-of'),
+          axios.get('http://localhost:8000/api/list-users'),
+        ])
+        .then(
+          axios.spread((ofertasResponse, usuariosResponse) => {
+            // Procesar ofertas
+            this.ofertas = ofertasResponse.data.ofertas;
+            this.processOfertasData();
+
+            // Procesar usuarios
+            this.usuarios = usuariosResponse.data.usuarios;
+            this.processUsuariosData();
+          })
+        )
+        .catch((error) => {
+          console.error('Error al obtener los datos:', error);
+          Swal.fire('Error', 'Hubo un problema al obtener los datos.', 'error');
         })
         .finally(() => {
           this.loading = false;
+          Swal.close(); // Cerrar el mensaje de carga
         });
     },
 
     // Procesar datos de ofertas para la gráfica
     processOfertasData() {
-      const ofertasLabels = this.ofertas.map(oferta => oferta.nombre);
-      const horasData = this.ofertas.map(oferta => oferta.horas_totales);
+      const ofertasLabels = this.ofertas.map((oferta) => oferta.nombre);
+      const horasData = this.ofertas.map((oferta) => oferta.horas_totales);
 
       this.ofertasData = {
         labels: ofertasLabels,
@@ -120,7 +121,7 @@ export default {
     processUsuariosData() {
       // Agrupar usuarios por fecha de creación y contar el número de usuarios creados en cada fecha
       const usuariosPorFecha = {};
-      this.usuarios.forEach(usuario => {
+      this.usuarios.forEach((usuario) => {
         const fecha = new Date(usuario.created_at).toLocaleDateString();
         usuariosPorFecha[fecha] = (usuariosPorFecha[fecha] || 0) + 1;
       });
@@ -128,7 +129,7 @@ export default {
       // Generar los datos acumulados para la gráfica de línea
       const fechas = Object.keys(usuariosPorFecha).sort();
       let acumulado = 0;
-      const dataAcumulada = fechas.map(fecha => {
+      const dataAcumulada = fechas.map((fecha) => {
         acumulado += usuariosPorFecha[fecha];
         return acumulado;
       });
@@ -141,7 +142,7 @@ export default {
             data: dataAcumulada,
             backgroundColor: 'rgba(66, 165, 245, 0.2)',
             borderColor: '#1E88E5',
-            borderWidth: 4,
+            borderWidth: 2,
             fill: true,
           },
         ],
@@ -164,8 +165,21 @@ export default {
 }
 
 h2 {
-  color: #1f2937;
+  color: white;
   font-weight: 600;
+  padding: 10px 15px;
+  background-color: #800020; /* Rojo guinda */
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+h4-tg {
+  color: white;
+  font-weight: 600;
+  padding: 10px 15px;
+  background-color: #800020; /* Rojo guinda */
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 h4 {
@@ -185,10 +199,4 @@ h4 {
     width: 100%;
   }
 }
-
-/* Título en rojo guinda */
-.dashboard-title {
-  color: #800020; /* Rojo guinda */
-}
-
 </style>
