@@ -11,6 +11,7 @@ Route::get('/saludo', function () {
 });
 
 Route::get('/list-of', [App\Livewire\OfAdminComponente::class, 'index'])->name('of-admin-componente');
+Route::get('/list-Sevicio', [App\Livewire\ServiciosComponent::class, 'index'])->name('servicios-component');
 Route::get('/add-of', [App\Livewire\OfAdminComponente::class, 'add'])->name('of-admin-componente');
 
 Route::get('/list-users', [App\Livewire\TablaUsersComponent::class, 'index'])->name('tabla-users-component.blade');
