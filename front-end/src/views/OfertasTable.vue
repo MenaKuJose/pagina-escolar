@@ -5,6 +5,9 @@
       <h2 class="h4 text-white mb-4">Ofertas Educativas</h2>
     </header>
 
+    <!-- Botón para mostrar los datos en consola -->
+    <button @click="mostrarOfertasEnConsola" class="btn btn-primary mb-4">Mostrar Ofertas en Consola</button>
+
     <!-- Loading and Table -->
     <div v-if="loading">
       <!-- Aquí no necesitamos el spinner porque SweetAlert2 manejará la carga -->
@@ -48,14 +51,15 @@ import Swal from 'sweetalert2';  // Importar SweetAlert2
 export default {
   data() {
     return {
-      ofertas: [],
+      ofertas: [], // Aquí se almacenarán las ofertas obtenidas
       loading: true, // Estado para controlar la carga
     };
   },
   mounted() {
-    this.fetchOfertas();
+    this.fetchOfertas(); // Obtener las ofertas al montar el componente
   },
   methods: {
+    // Método para obtener las ofertas
     fetchOfertas() {
       // Mostrar SweetAlert2 mientras se carga
       Swal.fire({
@@ -71,7 +75,7 @@ export default {
       axios
         .get("http://localhost:8000/api/list-of")
         .then((response) => {
-          this.ofertas = response.data.ofertas;
+          this.ofertas = response.data.ofertas; // Guardamos las ofertas
         })
         .catch((error) => {
           console.error("Error al obtener las ofertas:", error);
@@ -80,6 +84,11 @@ export default {
           this.loading = false; // Termina la carga
           Swal.close(); // Cierra el SweetAlert2 una vez cargados los datos
         });
+    },
+
+    // Método para mostrar las ofertas en consola
+    mostrarOfertasEnConsola() {
+      console.log(this.ofertas); // Muestra las ofertas en la consola
     },
   },
 };

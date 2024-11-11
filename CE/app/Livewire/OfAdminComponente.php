@@ -13,28 +13,11 @@ class OfAdminComponente extends Component
     public $ofertas;
     protected $listeners = ['ofertas' => 'render', 'ofertaUpdated' => 'render', 'deleteOferta' => 'deleteOferta'];
 
-    public function mount()
-    {
-        $this->ofertas = OfertaEducativa::all();
-    }
-
     public function render()
     {
         // Recarga las ofertas al renderizar para confirmar que se actualizan
         $this->ofertas = OfertaEducativa::all();
         return view('livewire.of-admin-componente', ['ofertas' => $this->ofertas]);
-    }
-
-    public function index()
-    {
-        $oferta = OfertaEducativa::all();
-        $data = [
-            'ofertas' => $oferta,
-            'datos' => 200
-        ];
-
-        // Retorna la respuesta en formato JSON
-        return response()->json($data, 200);
     }
 
     public function add(Request $request)
@@ -74,5 +57,23 @@ class OfAdminComponente extends Component
             $this->dispatch('ofertaUpdated');
             $this->dispatch('alert', '¡La Oferta se ha eliminado exitosamente!');
         }
+    }
+
+
+
+
+
+
+
+    public function index()
+    {
+        $oferta = OfertaEducativa::all();
+        $data = [
+            'ofertas' => $oferta,
+            'datos' => 200
+        ];
+
+        // Retorna la respuesta en formato JSON
+        return response()->json($data, 200);
     }
 }
