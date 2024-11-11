@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OfertaEducativaController;
+use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\TablaUsuariosController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\CrearOfertaComponente as LivewireCrearOfertaComponente;
@@ -21,6 +22,7 @@ Route::middleware([
 
     Route::resource('/usuarios', TablaUsuariosController::class);
     Route::resource('/oferta-educativa', OfertaEducativaController::class);
+    Route::resource('/servicios', ServiciosController::class);
 
     // Rutas para los componentes Livewire
     Route::get('/crear-oferta', LivewireCrearOfertaComponente::class)->name('crear.oferta');
