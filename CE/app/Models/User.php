@@ -64,4 +64,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function listUsers()
+    {
+        $usuarios = User::select('name', 'created_at')
+            ->get()
+            ->map(function ($usuario) {
+                return [
+                    'name' => $usuario->name,
+                    'created_at' => $usuario->created_at->format('Y-m-d H:i:s'), // Ajusta el formato de la fecha según tus preferencias
+                ];
+            });
+
+        return response()->json(['usuarios' => $usuarios]);
+    }
 }

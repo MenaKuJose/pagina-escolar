@@ -1,90 +1,135 @@
 <template>
-    <div>
-      <h2>Ofertas Educativas</h2>
-      <table class="table-auto w-full">
-        <thead>
+  <div class="container my-5 p-4 bg-light rounded">
+    <!-- Header Section with Red Background -->
+    <header class="header bg-red">
+      <h2 class="h4 text-white mb-4">Ofertas Educativas</h2>
+    </header>
+
+    <!-- Botón para mostrar los datos en consola -->
+    <button @click="mostrarOfertasEnConsola" class="btn btn-primary mb-4">Mostrar Ofertas en Consola</button>
+
+    <!-- Loading and Table -->
+    <div v-if="loading">
+      <!-- Aquí no necesitamos el spinner porque SweetAlert2 manejará la carga -->
+    </div>
+    
+    <div v-else class="table-responsive">
+      <table class="table table-bordered table-striped shadow-sm">
+        <thead class="bg-primary text-white">
           <tr>
-            <th class="px-4 py-2">Nombre</th>
-            <th class="px-4 py-2">Etapa Inicial</th>
-            <th class="px-4 py-2">Duración Inicial</th>
-            <th class="px-4 py-2">Etapa Continuidad</th>
-            <th class="px-4 py-2">Duración Continuidad</th>
-            <th class="px-4 py-2">Duración Total</th>
-            <th class="px-4 py-2">Horas Totales</th>
-            <th class="px-4 py-2">Créditos Totales</th>
+            <th scope="col" class="text-uppercase">Nombre</th>
+            <th scope="col" class="text-uppercase">Etapa Inicial</th>
+            <th scope="col" class="text-uppercase">Duración Inicial</th>
+            <th scope="col" class="text-uppercase">Etapa Continuidad</th>
+            <th scope="col" class="text-uppercase">Duración Continuidad</th>
+            <th scope="col" class="text-uppercase">Duración Total</th>
+            <th scope="col" class="text-uppercase">Horas Totales</th>
+            <th scope="col" class="text-uppercase">Créditos Totales</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="oferta in ofertas" :key="oferta.id">
-            <td class="border px-4 py-2">{{ oferta.nombre }}</td>
-            <td class="border px-4 py-2">{{ oferta.etapa_inicial }}</td>
-            <td class="border px-4 py-2">{{ oferta.duracion_cuatri_in }}</td>
-            <td class="border px-4 py-2">{{ oferta.etapa_continuidad }}</td>
-            <td class="border px-4 py-2">{{ oferta.duracion_cuatri_con }}</td>
-            <td class="border px-4 py-2">{{ oferta.duracion_total_programa }}</td>
-            <td class="border px-4 py-2">{{ oferta.horas_totales }}</td>
-            <td class="border px-4 py-2">{{ oferta.creditos_totales }}</td>
+          <tr v-for="oferta in ofertas" :key="oferta.id" class="table-hover">
+            <td>{{ oferta.nombre }}</td>
+            <td>{{ oferta.etapa_inicial }}</td>
+            <td>{{ oferta.duracion_cuatri_in }}</td>
+            <td>{{ oferta.etapa_continuidad }}</td>
+            <td>{{ oferta.duracion_cuatri_con }}</td>
+            <td>{{ oferta.duracion_total_programa }}</td>
+            <td>{{ oferta.horas_totales }}</td>
+            <td>{{ oferta.creditos_totales }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        ofertas: [],
-      };
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import Swal from 'sweetalert2';  // Importar SweetAlert2
+
+export default {
+  data() {
+    return {
+      ofertas: [], // Aquí se almacenarán las ofertas obtenidas
+      loading: true, // Estado para controlar la carga
+    };
+  },
+  mounted() {
+    this.fetchOfertas(); // Obtener las ofertas al montar el componente
+  },
+  methods: {
+    // Método para obtener las ofertas
+    fetchOfertas() {
+      // Mostrar SweetAlert2 mientras se carga
+      Swal.fire({
+        title: 'Cargando...',
+        text: 'Por favor espera mientras cargamos las ofertas.',
+        showConfirmButton: false,
+        allowOutsideClick: false, // Impide cerrar el alert al hacer clic fuera
+        didOpen: () => {
+          Swal.showLoading(); // Muestra el indicador de carga
+        },
+      });
+
+      axios
+        .get("http://localhost:8000/api/list-of")
+        .then((response) => {
+          this.ofertas = response.data.ofertas; // Guardamos las ofertas
+        })
+        .catch((error) => {
+          console.error("Error al obtener las ofertas:", error);
+        })
+        .finally(() => {
+          this.loading = false; // Termina la carga
+          Swal.close(); // Cierra el SweetAlert2 una vez cargados los datos
+        });
     },
-    mounted() {
-      this.fetchOfertas();
+
+    // Método para mostrar las ofertas en consola
+    mostrarOfertasEnConsola() {
+      console.log(this.ofertas); // Muestra las ofertas en la consola
     },
-    methods: {
-      fetchOfertas() {
-        axios
-          .get('http://localhost:8000/api/list-of')
-          .then(response => {
-            this.ofertas = response.data.ofertas;
-          })
-          .catch(error => {
-            console.error("Error al obtener las ofertas:", error);
-          });
-      },
-    },
-  };
-  
-  </script>
-  
-  <style scoped>
-  table {
-    background-color: #ffffff; /* Fondo blanco para la tabla */
-    color: #333; /* Texto en color oscuro */
-  }
-  
-  th, td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #f4f4f4; /* Fondo gris claro para encabezados */
-    color: #333; /* Texto en color oscuro */
-  }
-  
-  h2 {
-    color: #333; /* Texto del título en color oscuro */
-  }
-  
-  button {
-    color: #3498db; /* Color base del botón */
-  }
-  
-  button:hover {
-    color: #2980b9; /* Color del botón al pasar el cursor */
-  }
-  </style>
-  
+  },
+};
+</script>
+
+<style scoped>
+/* Contenedor del header */
+.header {
+  background-color: #800020; /* Rojo guinda */
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px; /* Espacio para separar el header del contenido */
+}
+
+/* Título dentro del header */
+.header h2 {
+  color: white; /* Texto blanco */
+  font-weight: 600;
+}
+
+/* Estilos generales para la tabla */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+td, th {
+  padding: 12px 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+</style>
