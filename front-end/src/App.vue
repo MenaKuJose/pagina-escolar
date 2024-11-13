@@ -17,6 +17,12 @@
         <li class="nav-item mb-2">
           <router-link to="/ofertas" class="nav-link text-white">Ofertas Educativas</router-link>
         </li>
+        <li class="nav-item mb-2">
+          <router-link to="/carrusel_de_imagenes" class="nav-link text-white">Imagenes</router-link>
+        </li>
+        <li class="nav-item mb-2">
+          <router-link to="/servicios" class="nav-link text-white">Servicios</router-link>
+        </li>
         <li class="nav-item">
           <router-link to="/usuarios" class="nav-link text-white">Usuarios Registrados</router-link>
         </li>

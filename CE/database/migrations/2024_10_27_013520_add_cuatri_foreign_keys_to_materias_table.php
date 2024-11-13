@@ -14,8 +14,12 @@ class AddCuatriForeignKeysToMateriasTable extends Migration
     public function up()
     {
         Schema::table('materias', function (Blueprint $table) {
-            $table->foreignId('cuatri_in_id')->nullable()->constrained('cuatri_in')->onDelete('cascade');
-            $table->foreignId('cuatri_con_id')->nullable()->constrained('cuatri_con')->onDelete('cascade');
+            if (!Schema::hasColumn('materias', 'cuatri_in_id')) {
+                $table->foreignId('cuatri_in_id')->nullable()->constrained('cuatri_in')->onDelete('cascade');
+            }
+            if (!Schema::hasColumn('materias', 'cuatri_con_id')) {
+                $table->foreignId('cuatri_con_id')->nullable()->constrained('cuatri_con')->onDelete('cascade');
+            }
         });
     }
 
@@ -27,10 +31,14 @@ class AddCuatriForeignKeysToMateriasTable extends Migration
     public function down()
     {
         Schema::table('materias', function (Blueprint $table) {
-            $table->dropForeign(['cuatri_in_id']);
-            $table->dropColumn('cuatri_in_id');
-            $table->dropForeign(['cuatri_con_id']);
-            $table->dropColumn('cuatri_con_id');
+            if (Schema::hasColumn('materias', 'cuatri_in_id')) {
+                $table->dropForeign(['cuatri_in_id']);
+                $table->dropColumn('cuatri_in_id');
+            }
+            if (Schema::hasColumn('materias', 'cuatri_con_id')) {
+                $table->dropForeign(['cuatri_con_id']);
+                $table->dropColumn('cuatri_con_id');
+            }
         });
     }
 }

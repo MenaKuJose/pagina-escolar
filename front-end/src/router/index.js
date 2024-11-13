@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import OfertasTable from '@/views/OfertasTable.vue'
 import UsuariosTable from '@/views/UsuariosTable.vue'
 import Servicios from '@/views/Servicios.vue'
+import Carrusel_de_imagenes from '@/views/Carrusel_de_imagenes.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/Servicios',
     name: 'Servicios',
     component: Servicios
+  },
+  {
+    path: '/Carrusel_de_imagenes',
+    name: 'Carrusel_de_imagenes',
+    component: Carrusel_de_imagenes
   },
   {
     path: '/about',
