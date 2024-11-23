@@ -59,7 +59,6 @@ class OfAdminComponente extends Component
         }
     }
 
-
     public function index()
     {
         $oferta = OfertaEducativa::all();
