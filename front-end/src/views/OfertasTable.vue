@@ -1,18 +1,23 @@
 <template>
   <div class="container my-5 p-4 bg-light rounded">
-    <!-- Header Section with Red Background -->
     <header class="header bg-red">
       <h2 class="h4 text-white mb-4">Ofertas Educativas</h2>
     </header>
 
-    <!-- Botón para mostrar los datos en consola -->
-    <button @click="mostrarOfertasEnConsola" class="btn btn-primary mb-4">Mostrar Ofertas en Consola</button>
-
-    <!-- Loading and Table -->
-    <div v-if="loading">
-      <!-- Aquí no necesitamos el spinner porque SweetAlert2 manejará la carga -->
+    <!-- Campo de búsqueda -->
+    <div class="mb-3">
+      <input
+        type="text"
+        v-model="buscar"
+        placeholder="Buscar oferta educativa"
+        class="form-control"
+      />
     </div>
-    
+
+    <!-- Tabla con resultados filtrados -->
+    <div v-if="loading">
+      <!-- SweetAlert2 maneja la carga -->
+    </div>
     <div v-else class="table-responsive">
       <table class="table table-bordered table-striped shadow-sm">
         <thead class="bg-primary text-white">
@@ -28,7 +33,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="oferta in ofertas" :key="oferta.id" class="table-hover">
+          <tr
+            v-for="oferta in ofertasFiltradas"
+            :key="oferta.id"
+            class="table-hover"
+          >
             <td>{{ oferta.nombre }}</td>
             <td>{{ oferta.etapa_inicial }}</td>
             <td>{{ oferta.duracion_cuatri_in }}</td>
@@ -46,49 +55,54 @@
 
 <script>
 import axios from "axios";
-import Swal from 'sweetalert2';  // Importar SweetAlert2
+import Swal from "sweetalert2";
 
 export default {
   data() {
     return {
-      ofertas: [], // Aquí se almacenarán las ofertas obtenidas
-      loading: true, // Estado para controlar la carga
+      ofertas: [], // Lista completa de ofertas
+      buscar: "", // Término de búsqueda
+      loading: true, // Estado de carga
     };
   },
+  computed: {
+    // Ofertas filtradas según el término de búsqueda
+    ofertasFiltradas() {
+      if (!this.buscar) return this.ofertas; // Si no hay término de búsqueda, mostrar todas
+      const term = this.buscar.toLowerCase();
+      return this.ofertas.filter((oferta) =>
+        oferta.nombre.toLowerCase().includes(term)
+      );
+    },
+  },
   mounted() {
-    this.fetchOfertas(); // Obtener las ofertas al montar el componente
+    this.fetchOfertas(); // Cargar las ofertas al montar el componente
   },
   methods: {
-    // Método para obtener las ofertas
+    // Método para obtener las ofertas desde la API
     fetchOfertas() {
-      // Mostrar SweetAlert2 mientras se carga
       Swal.fire({
-        title: 'Cargando...',
-        text: 'Por favor espera mientras cargamos las ofertas.',
+        title: "Cargando...",
+        text: "Por favor espera mientras cargamos las ofertas.",
         showConfirmButton: false,
-        allowOutsideClick: false, // Impide cerrar el alert al hacer clic fuera
+        allowOutsideClick: false,
         didOpen: () => {
-          Swal.showLoading(); // Muestra el indicador de carga
+          Swal.showLoading();
         },
       });
 
       axios
         .get("http://localhost:8000/api/list-of")
         .then((response) => {
-          this.ofertas = response.data.ofertas; // Guardamos las ofertas
+          this.ofertas = response.data.ofertas;
         })
         .catch((error) => {
           console.error("Error al obtener las ofertas:", error);
         })
         .finally(() => {
-          this.loading = false; // Termina la carga
-          Swal.close(); // Cierra el SweetAlert2 una vez cargados los datos
+          this.loading = false;
+          Swal.close();
         });
-    },
-
-    // Método para mostrar las ofertas en consola
-    mostrarOfertasEnConsola() {
-      console.log(this.ofertas); // Muestra las ofertas en la consola
     },
   },
 };
