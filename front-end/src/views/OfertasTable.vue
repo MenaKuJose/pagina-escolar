@@ -9,7 +9,7 @@
       <input
         type="text"
         v-model="buscar"
-        placeholder="Buscar oferta educativa"
+        placeholder="Buscar por nombre, horas, créditos o duración total"
         class="form-control"
       />
     </div>
@@ -47,6 +47,14 @@
             <td>{{ oferta.horas_totales }}</td>
             <td>{{ oferta.creditos_totales }}</td>
           </tr>
+          <!-- Mostrar mensaje si no hay coincidencias -->
+          <tr v-if="ofertasFiltradas.length === 0">
+            <td colspan="8" class="text-center">
+              <div class="alert alert-danger" role="alert">
+                <strong>No se encontraron resultados para la búsqueda:</strong> "{{ buscar }}"
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -70,9 +78,15 @@ export default {
     ofertasFiltradas() {
       if (!this.buscar) return this.ofertas; // Si no hay término de búsqueda, mostrar todas
       const term = this.buscar.toLowerCase();
-      return this.ofertas.filter((oferta) =>
-        oferta.nombre.toLowerCase().includes(term)
-      );
+      return this.ofertas.filter((oferta) => {
+        // Comparar término de búsqueda con múltiples campos
+        return (
+          oferta.nombre.toLowerCase().includes(term) ||
+          oferta.horas_totales.toString().includes(term) ||
+          oferta.creditos_totales.toString().includes(term) ||
+          oferta.duracion_total_programa.toString().includes(term)
+        );
+      });
     },
   },
   mounted() {
@@ -107,6 +121,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Contenedor del header */
