@@ -6,10 +6,11 @@ import { ref, onMounted, watch } from 'vue';
 import Swal from 'sweetalert2';
 
 const config = ref({
-    itemsToShow: 2.5,
-    wrapAround: true,
-    transition: 500,
-    autoplay: false,
+    itemsToShow: 1.5,       // Cantidad de elementos visibles
+    wrapAround: true,       // Hacer que el carrusel sea infinito
+    transition: 2000,       // Duración de la transición (ms)
+    autoplay: true,         // Activar autoplay
+    autoplayInterval: 60000 // Tiempo entre cada cambio automático (ms)
 });
 
 const loading = ref(true);
@@ -49,7 +50,7 @@ onMounted(() => {
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
-        },
+        }
     });
 
     loadImages();
@@ -57,7 +58,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <br><br><br><br>
     <div class="carousel-container">
         <h1>Carrusel de imágenes</h1>
 
@@ -74,26 +74,33 @@ onMounted(() => {
 
         <div v-if="!loading">
             <!-- Carrusel para múltiples imágenes -->
-            <Carousel v-if="filteredImages.length > 1" v-bind="config">
-                <Slide v-for="(image, index) in filteredImages" :key="index">
-                    <img :src="`http://localhost:8000/storage/${image.path}`" :alt="image.title" class="carousel__item" />
-                    <div class="carousel__caption">
-                        <h3>{{ image.title }}</h3>
-                        <p>{{ image.description }}</p>
-                    </div>
-                </Slide>
-                <template #addons>
-                    <Navigation />
-                </template>
-            </Carousel>
+            <div v-if="filteredImages.length > 1">
+                <Carousel v-bind="config">
+                    <Slide v-for="(image, index) in filteredImages" :key="index">
+                        <img :src="`http://localhost:8000/storage/${image.path}`" :alt="image.title" class="carousel__item" />
+                        <div class="carousel__caption">
+                            <h3>{{ image.title }}</h3>
+                            <p>{{ image.description }}</p>
+                        </div>
+                    </Slide>
+                    <template #addons>
+                        <Navigation />
+                    </template>
+                </Carousel>
+            </div>
 
             <!-- Mostrar una sola imagen sin carrusel -->
-            <div v-else class="single-image-container">
+            <div v-else-if="filteredImages.length === 1" class="single-image-container">
                 <img :src="`http://localhost:8000/storage/${filteredImages[0].path}`" :alt="filteredImages[0].title" class="single-image" />
                 <div class="single-image-caption">
                     <h3>{{ filteredImages[0].title }}</h3>
                     <p>{{ filteredImages[0].description }}</p>
                 </div>
+            </div>
+
+            <!-- Mostrar mensaje si no hay imágenes -->
+            <div v-else>
+                <p>No hay imágenes disponibles para mostrar.</p>
             </div>
         </div>
 
@@ -134,13 +141,11 @@ onMounted(() => {
 .carousel__item {
     min-height: 200px;
     width: 100%;
-    background-color: var(--brand-color);
-    color: #fff;
-    font-size: 20px;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+    object-fit: cover;
 }
 
 .single-image-container {
@@ -155,7 +160,7 @@ onMounted(() => {
     border-radius: 8px;
     max-height: 300px;
     object-fit: cover;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 .single-image-caption {
