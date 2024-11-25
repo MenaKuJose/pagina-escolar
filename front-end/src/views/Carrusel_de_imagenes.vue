@@ -9,9 +9,10 @@ const config = ref({
     itemsToShow: 1.5,       // Cantidad de elementos visibles
     wrapAround: true,       // Hacer que el carrusel sea infinito
     transition: 2000,       // Duración de la transición (ms)
-    autoplay: true,         // Activar autoplay
-    autoplayInterval: 60000 // Tiempo entre cada cambio automático (ms)
+    autoplay: 1000,         // Tiempo entre cada cambio automático (ms)
+    pauseAutoplayOnHover: false // Evitar que el autoplay se detenga al pasar el cursor
 });
+
 
 const loading = ref(true);
 const images = ref([]); // Todas las imágenes obtenidas de la API
@@ -116,6 +117,7 @@ onMounted(() => {
     margin: 0 auto;
     height: 300px;
     max-width: 1200px;
+    perspective: 1500px; /* Agrega perspectiva para el efecto 3D */
 }
 
 .image-selector {
@@ -139,13 +141,17 @@ onMounted(() => {
 }
 
 .carousel__item {
-    min-height: 200px;
-    width: 100%;
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    height: 300px; /* Define una altura fija para todas las imágenes */
+    object-fit: cover; /* Ajusta la imagen para llenar el contenedor */
     border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    object-fit: cover;
+    display: block;
+    transform: rotateY(-30deg) translateZ(-50px); /* Aplica el efecto 3D a las imágenes no visibles */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel__slide-active .carousel__item {
+    transform: rotateY(0) translateZ(0); /* La imagen activa está en el centro, sin transformación */
 }
 
 .single-image-container {
