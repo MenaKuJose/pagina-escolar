@@ -35,6 +35,13 @@
                         </x-nav-link>
                     </li>
                     <li>
+                        <x-nav-link href="{{ route('mejor-oferta.index') }}" :active="request()->routeIs('mejor-oferta.index')"
+                            class="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                            <i class="fas fa-graduation-cap w-6 h-6 text-gray-600"></i>
+                            <span x-show="isOpen" class="ml-3 font-medium">{{ __('Mejor Oferta Educativa') }}</span>
+                        </x-nav-link>
+                    </li>
+                    <li>
                         <x-nav-link href="{{ route('servicios.index') }}" :active="request()->routeIs('servicios.index')"
                             class="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                             <i class="fas fa-concierge-bell w-6 h-6 text-gray-900"></i>

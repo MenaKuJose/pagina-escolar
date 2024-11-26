@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\imagenesController;
+use App\Http\Controllers\MejorOfertaController;
 use App\Http\Controllers\OfertaEducativaController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\TablaUsuariosController;
@@ -23,6 +24,7 @@ Route::middleware([
 
     Route::resource('/usuarios', TablaUsuariosController::class);
     Route::resource('/oferta-educativa', OfertaEducativaController::class);
+    Route::resource('/mejor-oferta', MejorOfertaController::class);
     Route::resource('/imagenes', imagenesController::class);
     Route::resource('/servicios', ServiciosController::class);
 
