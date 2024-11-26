@@ -30,4 +30,9 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Paginación -->
+    <div class="mt-4">
+        {{ $mejoresOfertas->links() }}
+    </div>
 </div>

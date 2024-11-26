@@ -46,11 +46,12 @@ class MejorOfertaComponente extends Component
         $this->open = false;
     }
 
-    // Método para renderizar el componente
+    // Método para renderizar el componente con paginación
     public function render()
     {
         return view('livewire.mejor-oferta-componente', [
-            'mejoresOfertas' => MejorOfertaEducativa::with('ofertaEducativa')->get(),
+            'mejoresOfertas' => MejorOfertaEducativa::with('ofertaEducativa')
+                ->paginate(10), // Paginación, muestra 10 registros por página
         ]);
     }
 
