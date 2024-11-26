@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import OfertasTable from '@/views/OfertasTable.vue'
+import MejorOferta from '@/views/MejorOferta.vue'
 import UsuariosTable from '@/views/UsuariosTable.vue'
 import Servicios from '@/views/Servicios.vue'
 import Carrusel_de_imagenes from '@/views/Carrusel_de_imagenes.vue'
@@ -15,6 +16,11 @@ const routes = [
     path: '/ofertas',
     name: 'ofertas',
     component: OfertasTable
+  },
+  {
+    path: '/mejorOferta',
+    name: 'mejorOferta',
+    component: MejorOferta
   },
   {
     path: '/usuarios',

@@ -53,4 +53,22 @@ class MejorOfertaComponente extends Component
             'mejoresOfertas' => MejorOfertaEducativa::with('ofertaEducativa')->get(),
         ]);
     }
+
+    public function index()
+    {
+        $ofertas = MejorOfertaEducativa::with('ofertaEducativa')->get();
+
+        return response()->json([
+            'ofertas' => $ofertas->map(function ($oferta) {
+                return [
+                    'id' => $oferta->id,
+                    'etapa_inicial' => $oferta->etapa_inicial,
+                    'etapa_continuidad' => $oferta->etapa_continuidad,
+                    // Verifica si la relación existe y solo entonces la devuelves
+                    'oferta_educativa' => $oferta->ofertaEducativa ? $oferta->ofertaEducativa->only(['id', 'nombre']) : null,
+                ];
+            }),
+            'status' => 200,
+        ]);
+    }
 }
