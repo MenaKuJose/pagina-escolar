@@ -25,7 +25,7 @@
                             class="text-blue-500 hover:text-blue-700">
                             Editar
                         </x-secondary-button>
-                        <x-danger-button onclick="confirmDelete({{ $imagen->id }})"
+                        <x-danger-button onclick="confirmDeleteIm({{ $imagen->id }})"
                             class="text-red-500 hover:text-red-700">
                             Eliminar
                         </x-danger-button>

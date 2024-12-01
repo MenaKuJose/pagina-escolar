@@ -50,15 +50,16 @@ class ImageCrud extends Component
         $this->dispatch('editImage', $imageId);
     }
 
-    public function deleteImage($imageId)
+    public function deleteImage($imagenId)
     {
-        // Encuentra la imagen por ID y elimínala
-        $image = Image::find($imageId);
+        $image = Image::find($imagenId);
         if ($image) {
             if (Storage::disk('public')->exists($image->path)) {
                 Storage::disk('public')->delete($image->path);
             }
             $image->delete();
+
+            // Emitir los eventos
             $this->dispatch('imageUpdated');
             $this->dispatch('alert', '¡La imagen se ha eliminado exitosamente!');
         }

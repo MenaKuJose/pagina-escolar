@@ -70,6 +70,25 @@
             });
         }
 
+        function confirmDeleteIm(imagenId) {
+            // Mostrar alerta de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción eliminará la Imagen permanentemente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Ejecutar la función de eliminación de Livewire si se confirma
+                    window.Livewire.dispatch('deleteImage', imagenId);
+                }
+            });
+        }
+
         // Mantener la alerta de éxito después de eliminar
         Livewire.on('alert', function(message) {
             Swal.fire({
