@@ -1,5 +1,7 @@
 <div>
-    <canvas id="usuariosChart" width="400" height="200"></canvas>
+    <div class="p-4 rounded-lg shadow-md bg-white w-full max-w-xs mx-auto">
+        <canvas id="usuariosChart" width="350" height="175"></canvas>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -1,105 +1,129 @@
 <div>
-    <x-button wire:click="$set('open', true)">
-        Agregar Nueva Oferta
-    </x-button>
+    <!-- Botón para abrir el modal -->
+    <button type="button" class="btn btn-primary fw-bold shadow-sm" wire:click="$set('open', true)"
+        style="border-radius: 30px;">
+        <i class="bi bi-plus-circle"></i> Agregar Nueva Oferta
+    </button>
 
     <!-- Modal -->
-    <x-dialog-modal wire:model="open">
-        <x-slot name="title">
-            Agregar Nueva Oferta
-        </x-slot>
+    <div class="modal fade @if ($open) show d-block @endif" tabindex="-1" role="dialog"
+        style="@if ($open) display: block; @else display: none; @endif" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+                <!-- Título del modal -->
+                <div class="modal-header bg-primary text-white" style="border-radius: 15px 15px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square"></i> Agregar Nueva Oferta</h5>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
+                        wire:click="$set('open', false)"></button>
+                </div>
 
-        <x-slot name="content">
-            <!-- Nombre de la oferta -->
-            <div class="mb-4">
-                <x-label value="Nombre de la Oferta" />
-                <x-input type="text" class="w-full" wire:model.defer="nombre"></x-input>
-                @error('nombre')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
+                <!-- Contenido del modal -->
+                <div class="modal-body bg-light">
+                    <!-- Nombre de la oferta -->
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label fw-semibold">Nombre de la Oferta</label>
+                        <input type="text" id="nombre" class="form-control border-primary shadow-sm"
+                            wire:model.defer="nombre">
+                        @error('nombre')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Etapa Inicial -->
+                    <div class="mb-4">
+                        <label for="etapa_inicial" class="form-label fw-semibold">Etapa Inicial</label>
+                        <input type="text" id="etapa_inicial" class="form-control border-primary shadow-sm"
+                            wire:model.defer="etapa_inicial">
+                        @error('etapa_inicial')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Duración cuatrimestral inicial -->
+                    <div class="mb-4">
+                        <label for="duracion_cuatri_in" class="form-label fw-semibold">Duración Inicial
+                            (cuatrimestres)</label>
+                        <select id="duracion_cuatri_in" class="form-select border-primary shadow-sm"
+                            wire:model.defer="duracion_cuatri_in">
+                            <option value="">Seleccione</option>
+                            @foreach (range(1, 6) as $number)
+                                <option value="{{ $number }}">{{ $number }}</option>
+                            @endforeach
+                        </select>
+                        @error('duracion_cuatri_in')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Etapa de continuidad -->
+                    <div class="mb-4">
+                        <label for="etapa_continuidad" class="form-label fw-semibold">Etapa Continuidad</label>
+                        <input type="text" id="etapa_continuidad" class="form-control border-primary shadow-sm"
+                            wire:model.defer="etapa_continuidad">
+                        @error('etapa_continuidad')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Duración cuatrimestral de continuidad -->
+                    <div class="mb-4">
+                        <label for="duracion_cuatri_con" class="form-label fw-semibold">Duración Continuidad
+                            (cuatrimestres)</label>
+                        <select id="duracion_cuatri_con" class="form-select border-primary shadow-sm"
+                            wire:model.defer="duracion_cuatri_con">
+                            <option value="">Seleccione</option>
+                            @foreach (range(1, 5) as $number)
+                                <option value="{{ $number }}">{{ $number }}</option>
+                            @endforeach
+                        </select>
+                        @error('duracion_cuatri_con')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Horas Totales -->
+                    <div class="mb-4">
+                        <label for="horas_totales" class="form-label fw-semibold">Horas Totales</label>
+                        <input type="text" id="horas_totales" class="form-control border-primary shadow-sm"
+                            wire:model.defer="horas_totales">
+                        @error('horas_totales')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Créditos Totales -->
+                    <div class="mb-4">
+                        <label for="creditos_totales" class="form-label fw-semibold">Créditos Totales</label>
+                        <input type="text" id="creditos_totales" class="form-control border-primary shadow-sm"
+                            wire:model.defer="creditos_totales">
+                        @error('creditos_totales')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <!-- Mapa Curricular (archivo PDF) -->
+                    <div class="mb-4">
+                        <label for="mapa_curricular" class="form-label fw-semibold">Mapa Curricular</label>
+                        <input type="file" id="mapa_curricular" class="form-control border-primary shadow-sm"
+                            accept=".pdf" wire:model.defer="mapa_curricular">
+                        @error('mapa_curricular')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Pie del modal -->
+                <div class="modal-footer bg-light" style="border-radius: 0 0 15px 15px;">
+                    <button type="button" class="btn btn-secondary fw-bold shadow-sm" wire:click="$set('open', false)"
+                        style="border-radius: 30px;">
+                        <i class="bi bi-x-circle"></i> Cerrar
+                    </button>
+                    <button type="button" class="btn btn-success fw-bold shadow-sm" wire:click="save"
+                        style="border-radius: 30px;">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
             </div>
-
-            <!-- Etapa Inicial -->
-            <div class="mb-4">
-                <x-label value="Etapa Inicial" />
-                <x-input type="text" class="w-full" wire:model.defer="etapa_inicial"></x-input>
-                @error('etapa_inicial')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Duración cuatrimestral inicial -->
-            <div class="mb-4">
-                <x-label value="Duración Inicial (cuatrimestres)" />
-                <select class="w-full form-input" wire:model.defer="duracion_cuatri_in">
-                    <option value="">Seleccione</option>
-                    @foreach (range(1, 6) as $number)
-                        <option value="{{ $number }}">{{ $number }}</option>
-                    @endforeach
-                </select>
-                @error('duracion_cuatri_in')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Etapa de continuidad -->
-            <div class="mb-4">
-                <x-label value="Etapa Continuidad" />
-                <x-input type="text" class="w-full" wire:model.defer="etapa_continuidad"></x-input>
-                @error('etapa_continuidad')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Duración cuatrimestral de continuidad -->
-            <div class="mb-4">
-                <x-label value="Duración Continuidad (cuatrimestres)" />
-                <select class="w-full form-input" wire:model.defer="duracion_cuatri_con">
-                    <option value="">Seleccione</option>
-                    @foreach (range(1, 5) as $number)
-                        <option value="{{ $number }}">{{ $number }}</option>
-                    @endforeach
-                </select>
-                @error('duracion_cuatri_con')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Horas Totales -->
-            <div class="mb-4">
-                <x-label value="Horas Totales" />
-                <x-input type="text" class="w-full" wire:model.defer="horas_totales"></x-input>
-                @error('horas_totales')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Créditos Totales -->
-            <div class="mb-4">
-                <x-label value="Créditos Totales" />
-                <x-input type="text" class="w-full" wire:model.defer="creditos_totales"></x-input>
-                @error('creditos_totales')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Mapa Curricular (archivo PDF) -->
-            <div class="mb-4">
-                <x-label value="Mapa Curricular" />
-                <x-input type="file" class="w-full" accept=".pdf" wire:model.defer="mapa_curricular"></x-input>
-                @error('mapa_curricular')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-danger-button wire:click="$set('open', false)">
-                Cerrar
-            </x-danger-button>
-            <x-button wire:click="save" class="ml-2">
-                Guardar
-            </x-button>
-        </x-slot>
-    </x-dialog-modal>
+        </div>
+    </div>
 </div>

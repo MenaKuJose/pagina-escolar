@@ -5,13 +5,15 @@
         </section-title>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <!-- Ajustar el contenedor principal para que ocupe todo el alto de la pantalla -->
+    <div class="py-12 h-full">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 h-full">
             <livewire:crear-oferta-componente />
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <!-- Llamada al componente Livewire -->
-                <div class="flex justify-center">
-                    <div>
+            <div class="bg-white overflow-auto shadow-xl sm:rounded-lg p-6 h-full">
+                <!-- Ajustar el contenedor de la tabla para ocupar todo el alto disponible -->
+                <div class="flex justify-center h-full">
+                    <div class="w-full">
+                        <!-- Componente Livewire para las ofertas -->
                         <livewire:of-admin-componente />
                         <livewire:edit-oferta-modal />
                     </div>
