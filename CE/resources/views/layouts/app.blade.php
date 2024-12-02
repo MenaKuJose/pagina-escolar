@@ -24,7 +24,7 @@
 
 <body class="font-sans antialiased">
     @livewire('navigation-menu')
-    <div class="flex min-h-screen bg-gray-100">
+    <div class="flex min-h-screen bg-white">
         @livewire('sidebar')
         <!-- Contenido principal -->
         <main class="flex-1">

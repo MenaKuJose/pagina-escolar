@@ -1,15 +1,13 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center mb-4">
-                    <x-application-mark class="block h-9 w-auto" />
-                    <h2 class="ml-3 text-xl font-bold text-gray-800">Mi Aplicación</h2>
+                    <h2 class="ml-3 text-xl font-bold text-red-800">Universidad Tecnológica del Poniente</h2>
                 </div>
             </div>
-
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
@@ -19,9 +17,8 @@
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:text-gray-700 focus:outline-none focus:bg-red-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->currentTeam->name }}
-
                                         <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -80,9 +77,8 @@
                             @else
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gradient-to-t from-red-800 to-red-700 hover:text-gray-700 focus:outline-none focus:bg-red-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
-
                                         <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -94,31 +90,37 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
+                            <!-- Dropdown Content -->
+                            <div class="rounded-lg shadow-lg divide-y divide-red-800">
+                                <!-- Account Management -->
+                                <div class="block px-4 py-2 text-xs text-red-800">
+                                    {{ __('Ajustes') }}
+                                </div>
+
+                                <!-- Links -->
+                                <x-dropdown-link href="{{ route('profile.show') }}"
+                                    class="text-red-800 hover:bg-red-800 hover:text-white focus:outline-none focus:bg-red-700 transition ease-in-out duration-150">
+                                    {{ __('Perfil') }}
+                                </x-dropdown-link>
+
+                                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                    <x-dropdown-link href="{{ route('api-tokens.index') }}"
+                                        class="text-red-800 hover:bg-red-800 hover:text-white focus:outline-none focus:bg-red-700 transition ease-in-out duration-150">
+                                        {{ __('API Tokens') }}
+                                    </x-dropdown-link>
+                                @endif
+
+                                <div class="border-t border-red-600"></div>
+
+                                <!-- Logout -->
+                                <form method="POST" action="{{ route('logout') }}" x-data>
+                                    @csrf
+                                    <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();"
+                                        class="text-red-800 hover:bg-red-800 hover:text-white focus:outline-none focus:bg-red-700 transition ease-in-out duration-150">
+                                        {{ __('Cerrar sesión') }}
+                                    </x-dropdown-link>
+                                </form>
                             </div>
-
-                            <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
-
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-dropdown-link>
-                            @endif
-
-                            <div class="border-t border-gray-200"></div>
-
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}" x-data>
-                                @csrf
-
-                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -127,7 +129,7 @@
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    class="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -159,8 +161,8 @@
                 @endif
 
                 <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-400">{{ Auth::user()->email }}</div>
                 </div>
             </div>
 
@@ -181,43 +183,9 @@
                     @csrf
 
                     <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Logout') }}
                     </x-responsive-nav-link>
                 </form>
-
-                <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
-
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
-                    </div>
-
-                    <!-- Team Settings -->
-                    <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
-                        :active="request()->routeIs('teams.show')">
-                        {{ __('Team Settings') }}
-                    </x-responsive-nav-link>
-
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-responsive-nav-link>
-                    @endcan
-
-                    <!-- Team Switcher -->
-                    @if (Auth::user()->allTeams()->count() > 1)
-                        <div class="border-t border-gray-200"></div>
-
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Switch Teams') }}
-                        </div>
-
-                        @foreach (Auth::user()->allTeams() as $team)
-                            <x-switchable-team :team="$team" component="responsive-nav-link" />
-                        @endforeach
-                    @endif
-                @endif
             </div>
         </div>
     </div>
