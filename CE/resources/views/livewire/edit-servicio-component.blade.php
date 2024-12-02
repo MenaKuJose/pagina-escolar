@@ -1,63 +1,76 @@
 <div>
     <!-- Modal -->
-    <x-dialog-modal wire:model="open">
-        <x-slot name="title">
-            Agregar Nuevo Servicio
-        </x-slot>
+    <div class="modal fade @if ($open) show d-block @endif" tabindex="-1" role="dialog"
+        style="@if ($open) display: block; @else display: none; @endif" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+                <!-- Título del modal -->
+                <div class="modal-header bg-primary text-white" style="border-radius: 15px 15px 0 0;">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square"></i> Editar Servicio</h5>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
+                        wire:click="$set('open', false)"></button>
+                </div>
 
-        <x-slot name="content">
-            <!-- Nombre de la oferta -->
-            <div class="mb-4">
-                <x-label value="Nombre del servicio" />
-                <x-input type="text" class="w-full" wire:model.defer="nombre"></x-input>
-                @error('nombre')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
+                <!-- Contenido del modal -->
+                <div class="modal-body bg-light">
+                    <!-- Nombre de la Servicio -->
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label fw-semibold">Nombre de la Servicio</label>
+                        <input type="text" id="nombre" class="form-control border-primary shadow-sm rounded-3"
+                            wire:model.defer="nombre">
+                        @error('nombre')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <!-- Tipo Servicio -->
+                    <div class="mb-4">
+                        <label for="tipo_de_servicio" class="form-label fw-semibold">Tipo Servicio</label>
+                        <input type="text" id="tipo_de_servicio" class="form-control border-primary shadow-sm rounded-3"
+                            wire:model.defer="tipo_de_servicio">
+                        @error('tipo_de_servicio')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <!-- Contenido -->
+                    <div class="mb-4">
+                        <label for="contenido" class="form-label fw-semibold">Contenido</label>
+                        <input type="text" id="contenido" class="form-control border-primary shadow-sm rounded-3"
+                            wire:model.defer="contenido">
+                        @error('contenido')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <x-label value="Imagen Actual" />
+                        @if ($path)
+                            <img src="{{ $path }}" alt="Imagen actual" class="w-32 h-32 object-cover mt-2" />
+                        @else
+                            <span>No hay imagen actual.</span>
+                        @endif
+                    </div>
+        
+                    <!-- Cargar nueva imagen -->
+                    <div class="mb-4">
+                        <x-label value="Cargar Nueva Imagen" />
+                        <x-input type="file" class="w-full mt-2" accept="image/*" wire:model="newImage" />
+                        @error('newImage')
+                            <span class="text-sm text-red-600">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-            <!-- Tipo de servicio -->
-            <div class="mb-4">
-                <x-label value="Tipo de servicio" />
-                <x-input type="text" class="w-full" wire:model.defer="tipo_de_servicio"></x-input>
-                @error('tipo_de_servicio')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
+                </div>
 
-            <!-- Contenido -->
-            <div class="mb-4">
-                <x-label value="Contenido" />
-                <x-input type="text" class="w-full" wire:model.defer="contenido"></x-input>
-                @error('contenido')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
+                <!-- Pie del modal -->
+                <div class="modal-footer bg-light" style="border-radius: 0 0 15px 15px;">
+                    <button type="button" class="btn btn-secondary fw-bold shadow-sm rounded-3"
+                        wire:click="$set('open', false)">
+                        <i class="bi bi-x-circle"></i> Cerrar
+                    </button>
+                    <button type="button" class="btn btn-success fw-bold shadow-sm rounded-3" wire:click="save">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
             </div>
-            <!-- Imagen actual -->
-            <div class="mb-4">
-                <x-label value="Imagen Actual" />
-                @if ($path)
-                    <img src="{{ $path }}" alt="Imagen actual" class="w-32 h-32 object-cover mt-2" />
-                @else
-                    <span>No hay imagen actual.</span>
-                @endif
-            </div>
-
-            <!-- Cargar nueva imagen -->
-            <div class="mb-4">
-                <x-label value="Cargar Nueva Imagen" />
-                <x-input type="file" class="w-full mt-2" accept="image/*" wire:model="newImage" />
-                @error('newImage')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
-        </x-slot>
-        <x-slot name="footer">
-            <x-danger-button wire:click="$set('open', false)">
-                <i class="fa-solid fa-times"></i>
-            </x-danger-button>
-            <x-button wire:click="save" class="ml-2" style="background-color: #3C5A99">
-                <i class="fa-solid fa-save"></i>
-            </x-button>
-        </x-slot>
-    </x-dialog-modal>
+        </div>
+    </div>
 </div>

@@ -20,6 +20,9 @@
             <router-link to="/mejorOferta" class="nav-link text-white">Mejor Oferta Educativa</router-link>
           </li>
           <li class="nav-item">
+            <router-link to="/servicios" class="nav-link text-white">Servicios</router-link>
+          </li>
+          <li class="nav-item">
             <router-link to="/carrusel_de_imagenes" class="nav-link text-white">Imagenes</router-link>
           </li>
           <li class="nav-item">

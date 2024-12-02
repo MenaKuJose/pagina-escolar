@@ -12,7 +12,7 @@ class ServiciosComponent extends Component
 {
     use WithFileUploads;
     public $servicios;
-    protected $listeners = ['servicio' => 'render', 'servicioUpdated' => 'render', 'deleteOferta' => 'deleteOferta'];
+    protected $listeners = ['servicio' => 'render', 'servicioUpdated' => 'render', 'deleteServicio' => 'deleteServicio'];
 
     public function mount()
     {

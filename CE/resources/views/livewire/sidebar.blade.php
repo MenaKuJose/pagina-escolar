@@ -14,23 +14,24 @@
             <nav>
                 <ul class="space-y-2">
                     @php
-                        $routes = [
-                            ['name' => 'dashboard', 'icon' => 'fas fa-tachometer-alt', 'label' => 'Dashboard'],
-                            ['name' => 'usuarios.index', 'icon' => 'fas fa-users', 'label' => 'Tabla de Usuarios'],
-                            [
-                                'name' => 'oferta-educativa.index',
-                                'icon' => 'fas fa-graduation-cap',
-                                'label' => 'Oferta Educativa',
-                            ],
-                            [
-                                'name' => 'mejor-oferta.index',
-                                'icon' => 'fas fa-graduation-cap',
-                                'label' => 'Mejor Oferta Educativa',
-                            ],
-                            ['name' => 'imagenes.index', 'icon' => 'fa-solid fa-images', 'label' => 'Imágenes'],
-                        ];
-                    @endphp
-
+                    $routes = [
+                        ['name' => 'dashboard', 'icon' => 'fas fa-tachometer-alt', 'label' => 'Dashboard'],
+                        ['name' => 'usuarios.index', 'icon' => 'fas fa-users', 'label' => 'Tabla de Usuarios'],
+                        [
+                            'name' => 'oferta-educativa.index',
+                            'icon' => 'fas fa-graduation-cap',
+                            'label' => 'Oferta Educativa',
+                        ],
+                        [
+                            'name' => 'mejor-oferta.index',
+                            'icon' => 'fas fa-graduation-cap',
+                            'label' => 'Mejor Oferta Educativa',
+                        ],
+                        ['name' => 'imagenes.index', 'icon' => 'fa-solid fa-images', 'label' => 'Imágenes'],
+                        // Nuevo botón de Servicios
+                        ['name' => 'servicios.index', 'icon' => 'fas fa-concierge-bell', 'label' => 'Servicios'],
+                    ];
+                @endphp
                     @foreach ($routes as $route)
                         <li>
                             <a href="{{ route($route['name']) }}"
