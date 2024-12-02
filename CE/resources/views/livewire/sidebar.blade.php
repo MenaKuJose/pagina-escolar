@@ -1,10 +1,11 @@
-<div x-data="{ open: true }" class="flex min-h-screen bg-light">
+<div x-data="{ open: true }" class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside id="sidebar" class="bg-white border-r shadow-sm transition-all" :class="open ? 'w-64' : 'w-20'">
+    <aside id="sidebar" class=" text-red-800 border-r shadow-lg transition-all" :class="open ? 'w-64' : 'w-32'">
         <div class="p-3 h-full">
             <!-- Toggle Button -->
-            <button id="sidebar-toggle" class="flex items-center p-2 mb-4 transition-colors" @click="open = !open"
-                aria-expanded="true" aria-label="Toggle Sidebar">
+            <button id="sidebar-toggle"
+                class="flex items-center p-2 mb-4 transition-colors bg-red-700 hover:bg-red-800 rounded text-white"
+                @click="open = !open" aria-expanded="true" aria-label="Toggle Sidebar">
                 <i class="fas" :class="open ? 'fa-chevron-left' : 'fa-bars'"></i>
                 <span class="ml-2" :class="open ? 'block' : 'hidden'">Universidad Tecnológica del Poniente</span>
             </button>
@@ -34,16 +35,18 @@
                     @foreach ($routes as $route)
                         <li>
                             <a href="{{ route($route['name']) }}"
-                                class="flex items-center p-2 rounded transition-colors {{ request()->routeIs($route['name']) ? 'bg-blue-700 text-white' : 'text-gray-600' }}">
-                                <!-- Icon container (always visible) -->
-                                <div
-                                    class="w-6 h-6 flex items-center justify-center text-center rounded-md overflow-hidden">
+                                class="group flex items-center p-2 rounded transition-all 
+                                  {{ request()->routeIs($route['name']) ? 'bg-red-700 text-white' : 'text-red-800 hover:bg-red-800 hover:text-white' }}">
+                                <!-- Icon container -->
+                                <div class="w-8 h-8 flex items-center justify-center">
                                     <i
-                                        class="{{ $route['icon'] }} {{ request()->routeIs($route['name']) ? 'text-white' : 'text-gray-600' }} text-xl"></i>
+                                        class="{{ $route['icon'] }} text-lg 
+                                           {{ request()->routeIs($route['name']) ? 'text-white' : 'group-hover:text-white' }}"></i>
                                 </div>
                                 <!-- Label -->
-                                <span class="ml-2 transition-all duration-300"
-                                    :class="{ 'hidden': !open, 'block': open }">{{ $route['label'] }}</span>
+                                <span class="ml-3 transition-all duration-300" :class="open ? 'block' : 'hidden'">
+                                    {{ $route['label'] }}
+                                </span>
                             </a>
                         </li>
                     @endforeach
