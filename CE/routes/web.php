@@ -1,18 +1,20 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\imagenesController;
 use App\Http\Controllers\MejorOfertaController;
 use App\Http\Controllers\OfertaEducativaController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\TablaUsuariosController;
-use Illuminate\Support\Facades\Route;
 use App\Livewire\CrearOfertaComponente as LivewireCrearOfertaComponente;
 use App\Livewire\OfAdminComponente as LivewireOfAdminComponente;
 
+// Redirigir a la página de login en la raíz
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login'); // Redirige al login
 });
 
+// Rutas protegidas por middleware de autenticación
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
