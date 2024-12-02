@@ -1,16 +1,10 @@
-/* Bootstrap primero */
-@import "bootstrap/dist/css/bootstrap.min.css";
+@import 'form.css';
+@import 'buttons.css';
 
-/* Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Tus propios estilos */
-@import "form.css";
-@import "buttons.css";
-
-/* Otros estilos personalizados */
 [x-cloak] {
     display: none;
 }

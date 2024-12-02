@@ -12,14 +12,15 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        crossorigin="anonymous">
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Livewire Styles -->
+    <!-- Styles -->
     @livewireStyles
+    <script src="https://unpkg.com/@alpinejs/focus@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -46,13 +47,7 @@
 
     @stack('modals')
 
-    <!-- Livewire Scripts -->
     @livewireScripts
-
-    <!-- Cargar Alpine.js solo una vez (fuera del app.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-    <!-- Funciones JavaScript Personalizadas -->
     <script>
         function confirmDelete(ofertaId) {
             // Mostrar alerta de confirmación
@@ -104,9 +99,8 @@
         });
     </script>
 
-    <!-- Cargar otros scripts según sea necesario -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </html>
