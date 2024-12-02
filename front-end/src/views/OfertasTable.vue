@@ -1,62 +1,51 @@
 <template>
-  <div class="container my-5 p-4 bg-light rounded">
-    <header class="header bg-red">
-      <h2 class="h4 text-white mb-4">Ofertas Educativas</h2>
-    </header>
-
-    <!-- Campo de búsqueda -->
-    <div class="mb-3">
+  <div class="container my-2 p-4 bg-light rounded shadow-sm">
+    <div class="mb-4">
       <input
         type="text"
         v-model="buscar"
-        placeholder="Buscar por nombre, horas, créditos o duración total"
-        class="form-control"
+        placeholder="Buscar por nombre"
+        class="form-control form-control-lg"
       />
     </div>
-
-    <!-- Tabla con resultados filtrados -->
+    <header class="header mb-4">
+      <h2 class="h4 text-white">Ofertas Educativas</h2>
+    </header>   
     <div v-if="loading">
-      <!-- SweetAlert2 maneja la carga -->
+      <div class="text-center">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p>Cargando ofertas...</p>
+      </div>
     </div>
-    <div v-else class="table-responsive">
-      <table class="table table-bordered table-striped shadow-sm">
-        <thead class="bg-primary text-white">
-          <tr>
-            <th scope="col" class="text-uppercase">Nombre</th>
-            <th scope="col" class="text-uppercase">Etapa Inicial</th>
-            <th scope="col" class="text-uppercase">Duración Inicial</th>
-            <th scope="col" class="text-uppercase">Etapa Continuidad</th>
-            <th scope="col" class="text-uppercase">Duración Continuidad</th>
-            <th scope="col" class="text-uppercase">Duración Total</th>
-            <th scope="col" class="text-uppercase">Horas Totales</th>
-            <th scope="col" class="text-uppercase">Créditos Totales</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="oferta in ofertasFiltradas"
-            :key="oferta.id"
-            class="table-hover"
-          >
-            <td>{{ oferta.nombre }}</td>
-            <td>{{ oferta.etapa_inicial }}</td>
-            <td>{{ oferta.duracion_cuatri_in }}</td>
-            <td>{{ oferta.etapa_continuidad }}</td>
-            <td>{{ oferta.duracion_cuatri_con }}</td>
-            <td>{{ oferta.duracion_total_programa }}</td>
-            <td>{{ oferta.horas_totales }}</td>
-            <td>{{ oferta.creditos_totales }}</td>
-          </tr>
-          <!-- Mostrar mensaje si no hay coincidencias -->
-          <tr v-if="ofertasFiltradas.length === 0">
-            <td colspan="8" class="text-center">
-              <div class="alert alert-danger" role="alert">
-                <strong>No se encontraron resultados para la búsqueda:</strong> "{{ buscar }}"
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div v-else>
+      <div v-if="ofertasFiltradas.length > 0" class="row">
+        <div
+          v-for="oferta in ofertasFiltradas"
+          :key="oferta.id"
+          class="col-md-4 mb-4"
+        >
+          <div class="card shadow-lg h-100">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-primary">{{ oferta.nombre }}</h5>
+              <p class="card-text">
+                <strong>Etapa Inicial:</strong> {{ oferta.etapa_inicial }}<br />
+                <strong>Duración Inicial:</strong> {{ oferta.duracion_cuatri_in }} cuatrimestres<br />
+                <strong>Etapa Continuidad:</strong> {{ oferta.etapa_continuidad }}<br />
+                <strong>Duración Continuidad:</strong> {{ oferta.duracion_cuatri_con }} cuatrimestres<br />
+                <strong>Duración Total:</strong> {{ oferta.duracion_total_programa }}<br />
+                <strong>Horas Totales:</strong> {{ oferta.horas_totales }}<br />
+                <strong>Créditos Totales:</strong> {{ oferta.creditos_totales }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="ofertasFiltradas.length === 0" class="col-12">
+        <div class="alert alert-warning text-center" role="alert">
+          <strong>No se encontraron resultados para la búsqueda:</strong> "{{ buscar }}"
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -122,43 +111,75 @@ export default {
 };
 </script>
 
-
 <style scoped>
-/* Contenedor del header */
-.header {
-  background-color: #800020; /* Rojo guinda */
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px; /* Espacio para separar el header del contenido */
-}
-
-/* Título dentro del header */
-.header h2 {
-  color: white; /* Texto blanco */
-  font-weight: 600;
-}
-
-/* Estilos generales para la tabla */
+/* Contenedor general */
 .container {
-  max-width: 1000px;
+  max-width: 1200px; /* Ajuste de ancho máximo */
   margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
+
+.header {
+  background-color: #800020; 
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-th {
-  font-size: 14px;
-  text-transform: uppercase;
+.header h2 {
+  color: white;
+  font-weight: bold;
 }
 
-td, th {
-  padding: 12px 16px;
+input.form-control-lg {
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 2px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 50%;
 }
 
-tr:nth-child(even) {
-  background-color: #f9fafb;
+.card {
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-weight: bold;
+  color: #007bff; 
+}
+
+.card-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.card-text strong {
+  color: #333;
+}
+
+.alert {
+  font-size: 1rem;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.spinner-border {
+  margin-bottom: 1rem;
 }
 </style>

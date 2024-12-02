@@ -1,152 +1,134 @@
 <template>
-    <div class="container my-5 p-4 bg-light rounded">
-      <header class="header bg-red">
-        <h2 class="h4 text-white mb-4">Ofertas Educativas</h2>
-      </header>
-  
-      <!-- Tabla con resultados -->
-      <div v-if="loading">
-        <!-- SweetAlert2 maneja la carga -->
+  <div class="container my-5 p-4 bg-light rounded shadow-lg">
+    <header class="header mb-4">
+      <h2 class="h4 text-white text-center">La Mejor Oferta Educativa</h2>
+    </header>
+
+    <div v-if="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3">Cargando la mejor oferta...</p>
+    </div>
+
+    <div v-else>
+      <div v-if="ofertas.length > 0" class="card oferta-card mx-auto shadow-lg">
+        <div class="card-header text-white bg-primary text-center">
+          <h5 class="mb-0">Oferta #1</h5>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title text-center mb-4">
+            {{ ofertas[ofertas.length - 1].oferta_educativa?.nombre || "N/A" }}
+          </h4>
+          <p class="card-text">
+            <strong>Etapa Inicial:</strong> {{ ofertas[ofertas.length - 1].etapa_inicial }}
+          </p>
+          <p class="card-text">
+            <strong>Etapa Continuidad:</strong> {{ ofertas[ofertas.length - 1].etapa_continuidad }}
+          </p>
+        </div>
+        <div class="card-footer text-muted text-center">
+          Actualizado automáticamente cada 10 segundos
+        </div>
       </div>
-      <div v-else class="table-responsive">
-        <table class="table table-bordered table-striped shadow-sm">
-          <thead class="bg-primary text-white">
-            <tr>
-              <th scope="col" class="text-uppercase">ID</th>
-              <th scope="col" class="text-uppercase">Nombre</th>
-              <th scope="col" class="text-uppercase">Etapa Inicial</th>
-              <th scope="col" class="text-uppercase">Etapa Continuidad</th>
-            </tr>
-          </thead>
-          <tbody>
-  <tr v-if="ofertas.length > 0" class="table-hover">
-    <td>{{ ofertas[ofertas.length - 1].id }}</td>
-    <td v-if="ofertas[ofertas.length - 1].oferta_educativa">
-      {{ ofertas[ofertas.length - 1].oferta_educativa.nombre }}
-    </td>
-    <td v-else>N/A</td>
-    <td>{{ ofertas[ofertas.length - 1].etapa_inicial }}</td>
-    <td>{{ ofertas[ofertas.length - 1].etapa_continuidad }}</td>
-  </tr>
-  <!-- Mostrar mensaje si no hay datos -->
-  <tr v-if="ofertas.length === 0">
-    <td colspan="4" class="text-center">
-      <div class="alert alert-danger" role="alert">
+
+      <div v-else class="alert alert-warning text-center">
         <strong>No hay ofertas disponibles.</strong>
       </div>
-    </td>
-  </tr>
-</tbody>
-
-        </table>
-      </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from "axios";
-  import Swal from "sweetalert2";
-  
-  export default {
-    data() {
-      return {
-        ofertas: [], // Lista completa de ofertas
-        loading: true, // Estado de carga
-        isFirstLoad: true, // Controla si es la primera carga
-      };
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import Swal from "sweetalert2";
+
+export default {
+  data() {
+    return {
+      ofertas: [], 
+      loading: true, 
+      isFirstLoad: true, 
+    };
+  },
+  mounted() {
+    this.fetchOfertas();
+    this.autoRefresh();
+  },
+  beforeDestroy() {
+    clearInterval(this.refreshInterval); 
+  },
+  methods: {
+    fetchOfertas() {
+      if (this.isFirstLoad) {
+        Swal.fire({
+          title: "Cargando...",
+          text: "Por favor espera mientras cargamos la oferta.",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+        });
+      }
+
+      axios
+        .get("http://localhost:8000/api/mejor-oferta")
+        .then((response) => {
+          this.ofertas = response.data.ofertas;
+        })
+        .catch((error) => {
+          console.error("Error al obtener la oferta:", error);
+        })
+        .finally(() => {
+          this.loading = false;
+          Swal.close();
+          if (this.isFirstLoad) this.isFirstLoad = false;
+        });
     },
-    mounted() {
-      this.fetchOfertas(); // Cargar las ofertas al montar el componente
-      this.autoRefresh(); // Llamar a la función de auto-actualización
+    autoRefresh() {
+      this.refreshInterval = setInterval(() => {
+        this.fetchOfertas();
+      }, 10000);
     },
-    beforeDestroy() {
-      // Limpiar el intervalo cuando el componente se destruya
-      clearInterval(this.refreshInterval);
-    },
-    methods: {
-      // Método para obtener las ofertas desde la API
-      fetchOfertas() {
-        // Mostrar el spinner solo durante la primera carga
-        if (this.isFirstLoad) {
-          Swal.fire({
-            title: "Cargando...",
-            text: "Por favor espera mientras cargamos la oferta.",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
-        }
-  
-        axios
-          .get("http://localhost:8000/api/mejor-oferta")
-          .then((response) => {
-            console.log(response.data.ofertas); // Verifica la estructura aquí
-            this.ofertas = response.data.ofertas;
-          })
-          .catch((error) => {
-            console.error("Error al obtener la oferta:", error);
-          })
-          .finally(() => {
-            this.loading = false;
-            Swal.close();
-  
-            // Solo después de la primera carga, ya no mostrar el spinner
-            if (this.isFirstLoad) {
-              this.isFirstLoad = false; // Marca que ya no es la primera carga
-            }
-          });
-      },
-      // Método para auto-actualizar las ofertas cada 10 segundos
-      autoRefresh() {
-        this.refreshInterval = setInterval(() => {
-          this.fetchOfertas(); // Llama al método para cargar las ofertas
-        }, 10000); // Actualiza cada 10 segundos
-      },
-    },
-  };
-  </script>
-  
-  
-  
-  <style scoped>
-  /* Contenedor del header */
-  .header {
-    background-color: #800020; /* Rojo guinda */
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px; /* Espacio para separar el header del contenido */
-  }
-  
-  /* Título dentro del header */
-  .header h2 {
-    color: white; /* Texto blanco */
-    font-weight: 600;
-  }
-  
-  /* Estilos generales para la tabla */
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th {
-    font-size: 14px;
-    text-transform: uppercase;
-  }
-  
-  td, th {
-    padding: 12px 16px;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f9fafb;
-  }
-  </style>
-  
+  },
+};
+</script>
+
+<style scoped>
+.header {
+  background-color: #800020; 
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h2 {
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+}
+
+.oferta-card {
+  max-width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.oferta-card .card-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.oferta-card .card-body {
+  padding: 20px;
+  font-size: 1rem;
+}
+
+.oferta-card .card-footer {
+  font-size: 0.85rem;
+  background-color: #f8f9fa;
+}
+
+/* Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+</style>

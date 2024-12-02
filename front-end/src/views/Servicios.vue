@@ -1,142 +1,117 @@
 <template>
-    <div class="p-6 bg-gray-100 rounded-lg shadow-lg">
-        <br>
-        <br>
-        <br>
-        <main id="center">
-            <h1>Servicios</h1>
-            <table class="pure-table pure-table-horizontal">
-                <thead class="bg-blue-500 text-white">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Tipo de servicio</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="servicio in servicios" :key="servicio.id">
-                        <td>{{ servicio.nombre }}</td>
-                        <td>{{ servicio.tipo_de_servicio }}</td>
-                        <td>{{ servicio.contenido }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </main>
+  <div class="container-fluid py-3 bg-light">
+    <header class="text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">Nuestros Servicios</h1>
+      <p class="lead text-muted">
+        Descubre nuestros servicios destacados y cómo podemos ayudarte.
+      </p>
+    </header>
+
+    <!-- Spinner de carga -->
+    <div v-if="!servicios.length" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3">Cargando servicios...</p>
     </div>
+
+    <div v-else class="row g-4">
+      <div v-for="(servicio, index) in servicios" :key="servicio.id" class="col-12">
+        <div class="card h-100 shadow border-0">
+          <div class="row g-0" :class="{
+            'flex-row-reverse': index % 2 !== 0,
+          }">
+            <div class="col-md-4">
+              <img v-if="servicio.imagen" :src="`http://localhost:8000/storage/${servicio.imagen}`"
+                :alt="servicio.nombre" class="img-fluid rounded-start" style="object-fit: cover; height: 200px;" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title text-primary fw-bold">
+                  {{ servicio.nombre }}
+                </h5>
+                <h6 class="card-subtitle mb-3 text-secondary">
+                  <strong>Tipo:</strong> {{ servicio.tipo_de_servicio }}
+                </h6>
+                <p class="card-text">
+                  {{ servicio.contenido || "Sin descripción disponible." }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-    data() {
-        return {
-            servicios: [],
-        };
+  data() {
+    return {
+      servicios: [],
+    };
+  },
+  mounted() {
+    this.fetchServicios();
+  },
+  methods: {
+    fetchServicios() {
+      axios
+        .get("http://localhost:8000/api/list-Sevicio")
+        .then((response) => {
+          this.servicios = response.data.servicios;
+        })
+        .catch((error) => {
+          console.error("Error al obtener los servicios:", error);
+        });
     },
-    mounted() {
-        this.fetchservicios();
-    },
-    methods: {
-        fetchservicios() {
-            axios
-                .get('http://localhost:8000/api/list-Sevicio')
-                .then(response => {
-                    this.servicios = response.data.servicios;
-                })
-                .catch(error => {
-                    console.error("Error al obtener los servicios:", error);
-                });
-        },
-    },
+  },
 };
-
 </script>
 
 <style scoped>
+.container-fluid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 h1 {
-    text-align: center;
-    font-size: 2.75em;
-    font-family: "Covered By Your Grace", cursive;
-    font-weight: 300;
-    margin-top: -1em;
-    text-shadow: 0 2px 1px white;
+  font-size: 2.5rem;
 }
 
-#box {
-    margin: auto;
-    width: 50em;
-    height: 100%;
-    white-space: nowrap;
-
-    @media (max-width: 52em) {
-        width: 100%;
-    }
-
-    &::after {
-        content: "";
-        width: 1px;
-        height: 100%;
-        vertical-align: middle;
-        display: inline-block;
-        margin-right: -10px;
-    }
+p.lead {
+  font-size: 1.25rem;
 }
 
-#center {
-    display: inline-block;
-    vertical-align: middle;
-    white-space: normal;
+.card {
+  border-radius: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-table {
-    background-color: white;
-    padding: 1em;
-    border-collapse: collapse;
-    border: 1px solid green;
-
-    th {
-        text-transform: uppercase;
-        font-weight: 300;
-        text-align: center;
-        color: white;
-        background-color: green;
-        position: relative;
-
-        &::after {
-            content: "";
-            display: block;
-            height: 5px;
-            width: 100%;
-            background-color: dark-green;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-    }
-
-    td {
-        text-align: left;
-    }
-
-    td,
-    th {
-        border: 1px solid green;
-        padding: 0.5em;
-    }
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-#credits {
-    text-align: right;
-    color: white;
+.card-body {
+  padding: 20px;
+}
 
-    a {
-        color: dark-green;
-        text-decoration: none;
+.card-img-top {
+  border-radius: 16px 16px 0 0;
+}
 
-        &:hover {
-            text-decoration: underline;
-        }
-    }
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.btn-primary {
+  background-color: #6a5acd;
+  border-color: #6a5acd;
+}
+
+.btn-primary:hover {
+  background-color: #8a2be2;
 }
 </style>

@@ -1,19 +1,33 @@
 <div class="overflow-x-auto bg-white shadow-md rounded-lg">
     <table class="table-auto w-full text-left text-sm text-gray-500">
         <thead class="bg-gray-100 text-gray-700 uppercase font-semibold">
-            <tr style="background-color: #87CEEB" class=" text-gray-700 uppercase text-sm leading-normal">
+            <tr style="background-color: #87CEEB" class="text-gray-700 uppercase text-sm leading-normal">
+                <th class="px-6 py-3">ID</th> 
+                
                 <th class="px-6 py-3">Nombre del servicio</th>
                 <th class="px-6 py-3">Tipo de servicio</th>
                 <th class="px-6 py-3">Descripción</th>
-                <th class="px-6 py-3 text-center">Acciones</th> <!-- Nueva columna para acciones -->
+                <th class="px-6 py-3">Imagen</th> 
+                <th class="px-6 py-3 text-center">Acciones</th>
             </tr>
         </thead>
         <tbody class="text-gray-700">
             @foreach ($servicios as $servicio)
                 <tr class="border-b hover:bg-gray-50 transition duration-200">
+                    <td class="px-6 py-4">{{ $servicio->id }}</td>
+                    
+                    
                     <td class="px-6 py-4">{{ $servicio->nombre }}</td>
                     <td class="px-6 py-4">{{ $servicio->tipo_de_servicio }}</td>
-                    <td class="px-6 py-4">{{ $servicio->contenido }}</td>
+                    <td class="px-6 py-4">{{ $servicio->contenido }}</td><td class="px-6 py-4">
+                        @if ($servicio->imagen) <!-- Verifica si hay una imagen -->
+                            <img src="{{ asset('storage/' . $servicio->imagen) }}" 
+                                 alt="Imagen del servicio" 
+                                 class="w-16 h-16 object-cover rounded">
+                        @else
+                            <span class="text-gray-500 italic">Sin imagen</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 text-center">
                         <button 
                             wire:click="editservicio({{ $servicio->id }})" 
@@ -32,6 +46,7 @@
             @endforeach
         </tbody>
     </table>
+    
     <!-- Modal de Confirmación -->
     <div id="confirmModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 w-80">

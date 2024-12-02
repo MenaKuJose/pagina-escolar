@@ -14,29 +14,34 @@ class CrearServicioComponent extends Component
     public $nombre;
     public $tipo_de_servicio;
     public $contenido;
+    public $path;
 
 
     public function save()
     {
-        // Validación
+        
         $this->validate([
             'nombre' => 'required|string|max:255',
             'tipo_de_servicio' => 'required|string|max:255',
             'contenido' => 'required|string|max:255',
-
+            'path' => 'nullable|image|max:1024', 
         ]);
-
-
-
-        // Crear la oferta educativa
+    
+       
+        $imagePath = null;
+        if ($this->path) {
+            $imagePath = $this->path->store('servicios', 'public'); 
+        }
+    
+        // Crear el servicio
         Servicios::create([
             'nombre' => $this->nombre,
             'tipo_de_servicio' => $this->tipo_de_servicio,
             'contenido' => $this->contenido,
-
+            'imagen' => $imagePath, 
         ]);
-
-        // Emitir evento y reiniciar el formulario
+    
+       
         $this->dispatch('servicio')->to(ServiciosComponent::class);
         $this->dispatch('alert', '¡El servicio se ha creado exitosamente!');
         $this->reset([
@@ -44,10 +49,11 @@ class CrearServicioComponent extends Component
             'nombre',
             'tipo_de_servicio',
             'contenido',
-
+            'path',
         ]);
         $this->open = false;
     }
+    
 
     public function render()
     {

@@ -1,18 +1,17 @@
 <div>
     <x-button wire:click="$set('open', true)">
-        <i class="fa-solid fa-plus " style="color: #005eff;"></i>
-        <span >Agregar nuevo servicio</span>
+        <i class="fa-solid fa-plus" style="color: #005eff;"></i>
+        <span>Agregar nuevo servicio</span>
     </x-button>
 
     <!-- Modal -->
     <x-dialog-modal wire:model="open">
-        <x-slot  name="title">
+        <x-slot name="title">
             Agregar Nuevo Servicio
         </x-slot>
-        
 
         <x-slot name="content">
-            <!-- Nombre de la oferta -->
+            <!-- Nombre del servicio -->
             <div class="mb-4">
                 <x-label value="Nombre del servicio" />
                 <x-input type="text" class="w-full" wire:model.defer="nombre"></x-input>
@@ -38,6 +37,18 @@
                     <span class="text-sm text-red-600">{{ $message }}</span>
                 @enderror
             </div>
+
+            <!-- Imagen -->
+            <div class="mb-4">
+                <x-label value="Archivo de Imagen" />
+                <x-input type="file" class="w-full" accept="image/*" wire:model="path"></x-input>
+                @error('path')
+                    <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
+                <div wire:loading wire:target="path" class="text-sm text-blue-600">
+                    Cargando imagen...
+                </div>
+            </div>
         </x-slot>
 
         <x-slot name="footer">
@@ -46,7 +57,6 @@
             </x-danger-button>
             <x-button wire:click="save" class="ml-2" style="background-color: #3C5A99">
                 <i class="fa-solid fa-save"></i>
-                
             </x-button>
         </x-slot>
     </x-dialog-modal>

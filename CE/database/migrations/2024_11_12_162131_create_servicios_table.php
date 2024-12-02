@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servicios', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->string('tipo_de_servicio');
-            $table->text('contenido');
-            $table->timestamps(); 
-        });
+        if (!Schema::hasTable('servicios')) {
+            Schema::create('servicios', function (Blueprint $table) {
+                $table->id();
+                $table->string('nombre');
+                $table->string('tipo_de_servicio');
+                $table->text('contenido');
+                $table->string('imagen')->nullable(); // Nueva columna para la ruta de la imagen
+                $table->timestamps();
+            });
+        }
     }
 
     /**

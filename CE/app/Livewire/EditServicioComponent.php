@@ -15,8 +15,10 @@ class EditServicioComponent extends Component
 
     public $open = false;
     public $servicio;
-    public $nombre, $tipo_de_servicio,
-        $contenido;
+    public $nombre, $tipo_de_servicio;
+    public  $contenido;
+        public $path;
+        public $newImage;
    
 
     public function mount(Servicios $servicio)
@@ -31,7 +33,6 @@ class EditServicioComponent extends Component
     ];
 
     protected $listeners = ['editservicio' => 'loadservicio'];
-
     public function loadservicio($servicioId)
     {
         $servicio = Servicios::find($servicioId);
@@ -40,10 +41,13 @@ class EditServicioComponent extends Component
             $this->nombre = $servicio->nombre;
             $this->tipo_de_servicio = $servicio->tipo_de_servicio;
             $this->contenido = $servicio->contenido;
- // No asignar el archivo actual
+    
+            $this->path = $servicio->imagen ? Storage::url($servicio->imagen) : null;
+    
             $this->open = true;
         }
     }
+    
 
 
 
@@ -51,24 +55,29 @@ class EditServicioComponent extends Component
     public function save()
     {
         $this->validate();
-
+    
         $data = [
             'nombre' => $this->nombre,
             'tipo_de_servicio' => $this->tipo_de_servicio,
             'contenido' => $this->contenido,
         ];
-
-        // Solo manejar el archivo si se ha subido uno nuevo
-   
+    
+        
+        if ($this->newImage) {
+            $imagePath = $this->newImage->store('images', 'public'); 
+            $data['imagen'] = $imagePath; 
+        }
+    
+        
         $this->servicio->update($data);
-
-        // Reiniciar campos y cerrar modal
-       
+    
         $this->reset(['open']);
-        // Emitir evento para actualizar la tabla
+        
+        
         $this->dispatch('servicioUpdated')->to(ServiciosComponent::class);
-        $this->dispatch('alert', '¡La servicio se ha Editado Exitosamente!');
+        $this->dispatch('alert', '¡El servicio se ha editado exitosamente!');
     }
+    
 
 
     public function render()
