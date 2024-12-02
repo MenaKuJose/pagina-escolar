@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5 p-4 bg-light rounded">
     <!-- Header Section with Red Background -->
-    <header class="header bg-red">
+    <header class="header" style="background-color: #800020;">
       <h2 class="h4 text-white mb-4">Usuarios Registrados</h2>
     </header>
 
@@ -29,7 +29,7 @@
       <!-- Tabla con resultados -->
       <div v-else class="table-responsive">
         <table class="table table-bordered table-striped shadow-sm">
-          <thead class="bg-primary text-white">
+          <thead style="background-color: #800020;" class="text-white">
             <tr>
               <th scope="col" class="text-uppercase">ID</th>
               <th scope="col" class="text-uppercase">Nombre</th>
@@ -119,7 +119,7 @@ export default {
 <style scoped>
 /* Contenedor del header */
 .header {
-  background-color: #800020; /* Rojo guinda */
+  background-color: #800020; /* Rojo vino */
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px; /* Espacio para separar el header del contenido */
@@ -140,18 +140,48 @@ export default {
 table {
   border-collapse: collapse;
   width: 100%;
+  border-radius: 10px;
+  overflow: hidden; /* Bordes redondeados */
 }
 
 th {
   font-size: 14px;
   text-transform: uppercase;
+  background-color: #800020; /* Rojo vino */
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
 }
 
-td, th {
+td {
   padding: 12px 16px;
+  font-size: 14px;
 }
 
 tr:nth-child(even) {
   background-color: #f9fafb;
+}
+
+tr:hover {
+  background-color: #f4e1e1; /* Color suave al pasar el ratón */
+}
+
+table thead {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.alert {
+  font-size: 1rem;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>
