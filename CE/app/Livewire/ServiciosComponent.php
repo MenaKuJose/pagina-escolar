@@ -12,7 +12,8 @@ class ServiciosComponent extends Component
 {
     use WithFileUploads;
     public $servicios;
-    protected $listeners = ['servicio' => 'render', 'servicioUpdated' => 'render', 'deleteServicio' => 'deleteServicio'];
+    protected $listeners = ['servicio' => 'render', 'servicioUpdated' => 'render', 'deleteServicio' => 'deleteServicio']; // Corregido aquí
+
 
     public function mount()
     {
@@ -32,7 +33,7 @@ class ServiciosComponent extends Component
             'servicios' => $servicio,
             'datos' => 200
         ];
-         // Retorna la respuesta en formato JSON
+        // Retorna la respuesta en formato JSON
         return response()->json($data, 200);
     }
 
@@ -41,19 +42,15 @@ class ServiciosComponent extends Component
         $this->dispatch('editservicio', $servicioId);
     }
 
-    public function deleteServicio($id)
+    public function deleteServicio($servicioId)
     {
-        // Encuentra la oferta por ID y elimínala
-        $servicio = Servicios::find($id);
+        // Encuentra el servicio por ID y elimínalo
+        $servicio = Servicios::find($servicioId);
         if ($servicio) {
             $servicio->delete();
-            // Emitir eventos para actualizar la lista de ofertas y mostrar la alerta
+            // Emitir eventos para actualizar la lista de servicios y mostrar la alerta
             $this->dispatch('servicioUpdated');
             $this->dispatch('alert', '¡El servicio se ha eliminado exitosamente!');
         }
     }
-    
-    
-    
-
 }

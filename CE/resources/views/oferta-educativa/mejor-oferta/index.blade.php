@@ -11,7 +11,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <!-- Llamada al componente Livewire -->
                 <div class="flex justify-center">
-                    <div>
+                    <div class="w-full lg:w-11/12 mx-auto">
                         <livewire:mejor-oferta-componente />
                     </div>
                 </div>

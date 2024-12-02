@@ -89,6 +89,25 @@
             });
         }
 
+        function deleteServicio(servicioId) {
+            // Mostrar alerta de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción eliminará el servicio permanentemente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Ejecutar la función de eliminación de Livewire si se confirma
+                    window.Livewire.dispatch('deleteServicio', servicioId); // Corregido aquí
+                }
+            });
+        }
+
         // Mantener la alerta de éxito después de eliminar
         Livewire.on('alert', function(message) {
             Swal.fire({
